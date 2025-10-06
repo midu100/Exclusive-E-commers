@@ -37,7 +37,7 @@ const Banner = () => {
             </div>
 
             {/* ===== Banner Content ===== */}
-            <div className="flex-1 relative bg-black rounded-[10px] overflow-hidden">
+            <div className="flex-1 relative bg-black rounded-[10px] py-[58px] overflow-hidden">
               <img
                 src={BannerBg}
                 alt="iPhone"

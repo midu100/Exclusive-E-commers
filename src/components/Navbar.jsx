@@ -38,7 +38,7 @@ const Navbar = () => {
               <h1 className='text-[24px] font-bold'>Exclusive</h1>
             </div>
 
-            <ul className='flex gap-[48px] text-[16px] font-normal font-mono'>
+            <ul className='flex gap-[48px] text-[16px] font-medium'>
               {
                 navItem.map((item,i)=>(
                   <li key={i}><Link to={item.path}>{item.Name}</Link></li>
