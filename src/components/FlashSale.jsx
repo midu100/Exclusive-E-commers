@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar, FaRegHeart } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import SingleProduct from "./common/SingleProduct";
 import CommonHead from "./common/CommonHead";
+import axios from "axios";
 
 const FlashSale = () => {
+
+  const[product,setProduct] = useState([])
+  console.log(product)
+  const navigate = useNavigate()
+  const [cate , setCate ] = useState('furniture')
+
+ useEffect(()=>{
+   axios.get(`https://dummyjson.com/products/category/${cate}`)
+  .then(res=>{
+    setProduct(res.data.products)
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+ },[cate])
+
+// -------------- Navigating 
+
+  const handleNav = (e)=>{
+    console.log(e)
+    navigate('/productdetails' , { state: e })
+  }
+
+  console.log(product)
   return (
     <section className="py-[60px] bg-white ">
       <div className="container mx-auto px-4">
@@ -37,23 +62,23 @@ const FlashSale = () => {
 
           {/* ===== Products Section ===== */}
           <div className="flex flex-wrap justify-between gap-[20px]">
-            
-            {/* Product  */}
-            <SingleProduct />
-            <SingleProduct />
-            <SingleProduct />
-            <SingleProduct />
+
+            {
+              product.map((item,i)=>(
+                <SingleProduct key={i} showDetails={()=>handleNav(item)} Img={item?.images[0]} Title={item.title} price={item.price} rating={item.rating}/>
+              ))
+            }
            
           </div>
 
           {/* ===== View All Button ===== */}
           <div className="text-center mt-[30px]">
-            <Link
-              to="/products"
+            <button
+            onClick={()=>{setCate('smartphones')}}
               className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition"
             >
               View All Products
-            </Link>
+            </button>
           </div>
         </div>
       </div>
