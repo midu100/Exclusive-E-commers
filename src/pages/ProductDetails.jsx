@@ -10,30 +10,44 @@ import SliderImg from "../components/common/SliderImg";
 import BreadCrumb from "../components/common/BreadCrumb";
 import axios from "axios";
 import { useLocation, useParams } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, increment } from "../Slice";
 
 const ProductDetails = () => {
 
-    const[product,setProduct] = useState([])
-      console.log(product)
-      const param = useParams()
+    // const[product,setProduct] = useState([])
+    //   console.log(product)
+    //   const param = useParams()
+
+      const dispatch = useDispatch()
+      const count = useSelector((state)=>state.redu.value)
       
     
-     useEffect(()=>{
-       axios.get(`https://dummyjson.com/products/category/furniture/${param.id}`)
-      .then(res=>{
-        setProduct(res.data.products)
-      })
-      .catch(err=>{
-        console.log(err)
-      })
-     },[])
+    //  useEffect(()=>{
+    //    axios.get(`https://dummyjson.com/products/category/furniture`)
+    //   .then(res=>{
+    //     setProduct(res.data.products)
+    //   })
+    //   .catch(err=>{
+    //     console.log(err)
+    //   })
+    //  },[])
 
     const sendedData = useLocation()
     const locationData = sendedData.state
+    console.log(locationData)
+
+    const handleAdd = ()=>{
+        dispatch(increment())
+    }
+
+     const handleSub = ()=>{
+        dispatch(decrement())
+    }
     
 
   return (
-    <section className="py-[60px] bg-white">
+    <section className="pt-[60px] pb-[140px] bg-white">
       <div className="container mx-auto px-4">
         <BreadCrumb breadLink={'/productdetails'} breadName={'Product Details'} />
         <div className="row flex flex-col lg:flex-row gap-[40px]">
@@ -41,7 +55,7 @@ const ProductDetails = () => {
           {/* ===== Left Image Section ===== */}
           <div className="flex flex-col lg:flex-row gap-[20px] flex-1 justify-center">
 
-            <SliderImg proSubImg={locationData.images[1]} />
+            <SliderImg proSubImg={locationData?.images[1]} />
             
           </div>
 
@@ -50,21 +64,21 @@ const ProductDetails = () => {
 
             {/* Product Title */}
             <h2 className="text-[26px] font-semibold text-gray-800">
-              {locationData.title}
+              {locationData?.title}
             </h2>
 
             {/* Ratings & Stock */}
             <div className="flex items-center gap-2 text-[14px] text-gray-500">
-              ⭐⭐⭐⭐⭐ <span>(150 Reviews)</span>
-              <span className="ml-3 text-green-600 font-medium">In Stock</span>
+              ⭐⭐⭐⭐⭐ <span>({locationData.reviews.length} Reviews)</span>
+              <span className="ml-3 text-green-600 font-medium">{locationData.availabilityStatus}</span>
             </div>
 
             {/* Price */}
-            <p className="text-[22px] font-semibold text-gray-800">$192.00</p>
+            <p className="text-[22px] font-semibold text-gray-800">${locationData?.price}</p>
 
             {/* Description */}
             <p className="text-[15px] text-gray-500 leading-6">
-              PlayStation 5 Controller Skin High quality vinyl with air channel adhesive for easy bubble free install & mess free removal. Pressure sensitive.
+              {locationData?.description}
             </p>
 
             <hr className="my-2 border-gray-300" />
@@ -95,11 +109,11 @@ const ProductDetails = () => {
             {/* Quantity, Buy, Wishlist */}
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center border border-gray-400 rounded-md">
-                <button className="p-2 text-gray-600 hover:bg-red-500 hover:text-white duration-[.4s]">
+                <button onClick={handleSub} className="p-2 text-gray-600 hover:bg-red-500 hover:text-white duration-[.4s]">
                   <AiOutlineMinus />
                 </button>
-                <span className="px-4 text-gray-700 font-medium">0</span>
-                <button className="p-2 text-gray-600 hover:bg-red-500 hover:text-white duration-[.4s]">
+                <span className="px-4 text-gray-700 font-medium">{count}</span>
+                <button onClick={handleAdd} className="p-2 text-gray-600 hover:bg-red-500 hover:text-white duration-[.4s]">
                   <AiOutlinePlus />
                 </button>
               </div>

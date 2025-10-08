@@ -28,8 +28,8 @@ const SingleProduct = ({Img,Title,price,discountPrice,rating,showDetails}) => {
                 </h3>
 
                 <div className="flex items-center gap-[8px] mb-2">
-                    <p className="text-red-500 font-semibold text-[16px]">Tk {price}</p>
-                    <p className="text-gray-400 line-through text-[14px]">Tk {discountPrice}</p>
+                    <p className="text-red-500 font-semibold text-[16px]">$ {price}</p>
+                    <p className="text-gray-400 line-through text-[14px]">$ {discountPrice}</p>
                 </div>
 
                 <div className="flex items-center text-yellow-500 text-[14px] gap-[4px]">

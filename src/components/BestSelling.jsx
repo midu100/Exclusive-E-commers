@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CommonHead from './common/CommonHead'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SingleProduct from './common/SingleProduct';
 import Slider from 'react-slick';
+import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 const BestSelling = () => {
    const settings = {
@@ -14,6 +16,24 @@ const BestSelling = () => {
     slidesToScroll: 3
   };
 
+  const [product,setProduct] = useState([])
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    axios.get(`https://dummyjson.com/products/category/motorcycle`)
+    .then((res)=>{
+        setProduct(res.data.products)
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+  },[])
+
+//   Details
+const handleDetail =(e)=>{
+    navigate('/productdetails' , {state : e})
+}
+
   return (
     <div>
         <section className='pb-[140px]'>
@@ -22,25 +42,15 @@ const BestSelling = () => {
                 <div className="row mt-[60px]">
 
                     <Slider {...settings}>
-                        <div>
-                            <SingleProduct />
-                        </div>
+                        {
+                            product.map((item,i)=>(
+                                <div key={i}>
+                                  <SingleProduct showDetails={()=>handleDetail(item)} Img={item.images[2]} Title={item.title} price={item.price} rating={item.rating}/>
+                                </div>
+                            ))
+                        }
+                        
 
-                        <div>
-                            <SingleProduct />
-                        </div>
-
-                        <div>
-                            <SingleProduct />
-                        </div>
-
-                        <div>
-                            <SingleProduct />
-                        </div>
-
-                        <div>
-                            <SingleProduct />
-                        </div>
                     </Slider>
 
                 </div>

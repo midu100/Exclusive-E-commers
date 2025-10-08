@@ -23,7 +23,7 @@ const Banner = () => {
           <div className="row flex flex-col md:flex-row gap-[20px]">
 
             {/* ===== Left Sidebar ===== */}
-            <div className="md:w-[250px] border-b md:border-b-0 md:border-r border-gray-200 md:pr-5">
+            {/* <div className="md:w-[250px] border-b md:border-b-0 md:border-r border-gray-200 md:pr-5">
               <ul className="space-y-3">
                 {categories.map((cat, i) => (
                   <li
@@ -34,7 +34,7 @@ const Banner = () => {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
 
             {/* ===== Banner Content ===== */}
             <div className="flex-1 relative bg-black rounded-[10px] py-[58px] overflow-hidden">
