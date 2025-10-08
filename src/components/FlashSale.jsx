@@ -11,6 +11,7 @@ const FlashSale = () => {
   console.log(product)
   const navigate = useNavigate()
   const [cate , setCate ] = useState('furniture')
+  const[showBtn,setShowBtn] = useState(false)
 
  useEffect(()=>{
    axios.get(`https://dummyjson.com/products/category/${cate}`)
@@ -30,6 +31,51 @@ const FlashSale = () => {
   }
 
   console.log(product)
+
+  const [timeleft,setTimeleft] = useState(
+    {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0
+    }
+  )
+  console.log(timeleft.seconds)
+
+  const endTime = new Date().getTime() + 3 * 24 * 60 * 60 * 1000
+  useEffect(()=>{
+    console.log(endTime)
+
+    const interval = setInterval(() => {
+
+      const now = new Date().getTime()
+      const distance = endTime - now
+
+      if(distance <=0 ){
+          clearInterval(interval)
+          setTimeleft({
+              days: 0,
+              hours: 0,
+              minutes: 0,
+              seconds: 0
+            })
+        }
+
+        else{
+          const days = Math.floor(distance / (1000*60*60*24))
+          const hours = Math.floor(distance % (1000*60*60*24) / (1000*60*60))
+          const minutes = Math.floor(distance % (1000*60*60) / (1000*60))
+          const seconds  = Math.floor(distance % (1000*60) / 1000)
+
+          setTimeleft({days,hours,minutes,seconds})
+        }
+
+    }, 1000);
+
+    return () => clearInterval(interval);
+
+  },[])
+
   return (
     <section className="py-[60px] bg-white ">
       <div className="container mx-auto px-4">
@@ -42,19 +88,19 @@ const FlashSale = () => {
             {/* ===== Timer ===== */}
             <div className="flex gap-[15px] mt-4 md:mt-0">
               <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">03</p>
+                <p className="text-[22px] font-bold text-red-500">{timeleft.days}</p>
                 <p className="text-[12px] text-gray-500 capitalize">Days</p>
               </div>
               <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">23</p>
+                <p className="text-[22px] font-bold text-red-500">{timeleft.hours}</p>
                 <p className="text-[12px] text-gray-500 capitalize">Hours</p>
               </div>
               <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">19</p>
+                <p className="text-[22px] font-bold text-red-500">{timeleft.minutes}</p>
                 <p className="text-[12px] text-gray-500 capitalize">Minutes</p>
               </div>
               <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">56</p>
+                <p className="text-[22px] font-bold text-red-500">{timeleft.seconds}</p>
                 <p className="text-[12px] text-gray-500 capitalize">Seconds</p>
               </div>
             </div>
@@ -73,12 +119,19 @@ const FlashSale = () => {
 
           {/* ===== View All Button ===== */}
           <div className="text-center mt-[30px]">
-            <button
-            onClick={()=>{setCate('smartphones')}}
-              className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition"
-            >
+            {
+              showBtn ?
+              <button onClick={()=>{setCate('furniture'),setShowBtn(!showBtn)}} className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition">
+                 Previous Products
+              </button>
+
+              :
+
+
+            <button onClick={()=>{setCate('womens-dresses'),setShowBtn(!showBtn)}} className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition">
               View All Products
             </button>
+            }
           </div>
         </div>
       </div>

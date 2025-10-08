@@ -11,9 +11,13 @@ const BestSelling = () => {
    const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 1500,
     slidesToShow: 4,
-    slidesToScroll: 3
+    slidesToScroll: 1,
+    autoplay:true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+
   };
 
   const [product,setProduct] = useState([])

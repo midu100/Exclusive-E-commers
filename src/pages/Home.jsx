@@ -14,9 +14,9 @@ const Home = () => {
       <Banner />
       <FlashSale />
       <Category />
-      <BestSelling />
-      <MusicExperience />
       <ExploreProduct />
+      <MusicExperience />
+      <BestSelling />
       <NewArrival />
       <Service />
     </>
