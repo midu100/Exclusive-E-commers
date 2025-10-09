@@ -4,14 +4,18 @@ import { Link, useNavigate } from "react-router";
 import SingleProduct from "./common/SingleProduct";
 import CommonHead from "./common/CommonHead";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addTocart } from "../Slice";
 
 const FlashSale = () => {
 
+  // ==========Variables=============
   const[product,setProduct] = useState([])
-  console.log(product)
+  // console.log(product)
   const navigate = useNavigate()
   const [cate , setCate ] = useState('furniture')
   const[showBtn,setShowBtn] = useState(false)
+  const dispatch = useDispatch()
 
  useEffect(()=>{
    axios.get(`https://dummyjson.com/products/category/${cate}`)
@@ -30,8 +34,9 @@ const FlashSale = () => {
     navigate('/productdetails' , { state: e })
   }
 
-  console.log(product)
+  // console.log(product)
 
+//  =======================================start timer
   const [timeleft,setTimeleft] = useState(
     {
       days: 0,
@@ -40,11 +45,11 @@ const FlashSale = () => {
       seconds: 0
     }
   )
-  console.log(timeleft.seconds)
+  // console.log(timeleft.seconds)
 
   const endTime = new Date().getTime() + 3 * 24 * 60 * 60 * 1000
   useEffect(()=>{
-    console.log(endTime)
+    // console.log(endTime)
 
     const interval = setInterval(() => {
 
@@ -75,6 +80,16 @@ const FlashSale = () => {
     return () => clearInterval(interval);
 
   },[])
+  // ====================================================end timer
+
+  // =========Cart====================================
+   const handleCart = (e)=>{
+    const existId = JSON.parse(localStorage.getItem('Cart')) || []
+     existId.push(e)
+     localStorage.setItem('Cart',JSON.stringify(existId))
+     console.log(existId)
+     dispatch(addTocart(existId))
+   }
 
   return (
     <section className="py-[60px] bg-white ">
@@ -111,7 +126,7 @@ const FlashSale = () => {
 
             {
               product.map((item,i)=>(
-                <SingleProduct key={i} showDetails={()=>handleNav(item)} Img={item?.images[0]} Title={item.title} price={item.price} rating={item.rating}/>
+                <SingleProduct key={i} cartClick={()=>handleCart(item)} showDetails={()=>handleNav(item)} Img={item?.images[0]} Title={item.title} price={item.price} rating={item.rating}/>
               ))
             }
            

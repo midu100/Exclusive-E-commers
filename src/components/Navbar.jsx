@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { FiSearch } from "react-icons/fi";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { IoCartOutline } from "react-icons/io5";
+import { useSelector } from 'react-redux';
 
 
 
@@ -26,6 +27,9 @@ const Navbar = () => {
       path : '/'
     },
   ]
+
+  const reduxCart = useSelector(state => state.redu.cartValue)
+  console.log(reduxCart)
 
   return (
     <>
@@ -58,7 +62,7 @@ const Navbar = () => {
                   <button className='relative'>
                     <IoCartOutline className='text-[32px]'/>
 
-                    <span className='w-[20px] h-[20px] bg-orange-500 rounded-full text-[#fff] font-semibold text-[16px] absolute top-[-2px] right-[-5px] flex justify-center items-center'>0</span>
+                    <span className='w-[20px] h-[20px] bg-orange-500 rounded-full text-[#fff] font-semibold text-[16px] absolute top-[-2px] right-[-5px] flex justify-center items-center'>{reduxCart ? reduxCart.length : 0}</span>
                     
                   </button>
                 </div>

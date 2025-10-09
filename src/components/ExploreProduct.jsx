@@ -28,7 +28,7 @@ const ExploreProduct = () => {
             <div className="row flex flex-wrap justify-between gap-[40px] mt-[60px]">
               {
                 product.map((item,i)=>(
-                  <SingleProduct Img={item?.images[0]} Title={item?.title} price={item?.price} rating={item?.rating} />
+                  <SingleProduct key={i} Img={item?.images[0]} Title={item?.title} price={item?.price} rating={item?.rating} />
                 ))
               }
             </div>

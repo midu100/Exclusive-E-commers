@@ -4,6 +4,7 @@ export const counterSlice = createSlice({
   name: 'counter',
   initialState: {
     value: 0,
+    cartValue : JSON.parse(localStorage.getItem('Cart')) || null
   },
   reducers: {
     increment: (state) => {
@@ -17,10 +18,17 @@ export const counterSlice = createSlice({
     incrementByAmount: (state, action) => {
       state.value += action.payload
     },
+    addTocart: (state, action) => {
+      state.cartValue = action.payload
+    },
+    removeCart: (state, action) => {
+      state.cartValue =state.cartValue.filter((item)=>{item !== action.payload}) 
+      localStorage.setItem('Cart',JSON.stringify(state.cartValue))
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { increment, decrement, incrementByAmount,addTocart,removeCart } = counterSlice.actions
 
 export default counterSlice.reducer

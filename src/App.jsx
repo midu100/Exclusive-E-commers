@@ -12,6 +12,7 @@ import LayoutOne from "./layout/LayoutOne";
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import AllCate from "./pages/AllCate";
+import Cart from "./pages/Cart";
 
 function App() {
   const myRoute = createBrowserRouter(
@@ -21,6 +22,7 @@ function App() {
           <Route index element={<Home />}></Route>
           <Route path="/productdetails" element={<ProductDetails />} />
           <Route path="/allcategory" element={<AllCate />} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
       </Route>
     )
