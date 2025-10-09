@@ -13,6 +13,7 @@ import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import AllCate from "./pages/AllCate";
 import Cart from "./pages/Cart";
+import Signup from "./pages/Signup ";
 
 function App() {
   const myRoute = createBrowserRouter(
@@ -23,6 +24,7 @@ function App() {
           <Route path="/productdetails" element={<ProductDetails />} />
           <Route path="/allcategory" element={<AllCate />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/singup" element={<Signup />} />
         </Route>
       </Route>
     )
