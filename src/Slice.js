@@ -22,7 +22,7 @@ export const counterSlice = createSlice({
       state.cartValue = action.payload
     },
     removeCart: (state, action) => {
-      state.cartValue =state.cartValue.filter((item)=>{item !== action.payload}) 
+      state.cartValue =state.cartValue.filter((item)=>{item == action.payload}) 
       localStorage.setItem('Cart',JSON.stringify(state.cartValue))
     },
   },

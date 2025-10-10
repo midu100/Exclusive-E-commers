@@ -56,15 +56,15 @@ const Navbar = () => {
                   <FiSearch />
                 </div>
 
-                <div className='flex gap-[16px]'>
+                <div className='flex items-center gap-[16px]'>
                   <button><IoIosHeartEmpty className='text-[32px]'/></button>
 
-                  <button className='relative'>
+                  <Link to={'/cart'} className='relative'>
                     <IoCartOutline className='text-[32px]'/>
 
                     <span className='w-[20px] h-[20px] bg-orange-500 rounded-full text-[#fff] font-semibold text-[16px] absolute top-[-2px] right-[-5px] flex justify-center items-center'>{reduxCart ? reduxCart.length : 0}</span>
                     
-                  </button>
+                  </Link>
                 </div>
 
 

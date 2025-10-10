@@ -14,6 +14,7 @@ import ProductDetails from "./pages/ProductDetails";
 import AllCate from "./pages/AllCate";
 import Cart from "./pages/Cart";
 import Signup from "./pages/Signup ";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const myRoute = createBrowserRouter(
@@ -33,6 +34,7 @@ function App() {
   return (
     <>
       <RouterProvider router={myRoute} />
+      <ToastContainer />
     </>
   );
 }
