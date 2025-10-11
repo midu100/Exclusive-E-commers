@@ -33,7 +33,7 @@ const SingleProduct = ({Img,Title,price,discountPrice,rating,showDetails,cartCli
               </div>
 
               <div className="p-[12px]">
-                  <h3 className="text-[14px] font-medium text-gray-700 mb-1 truncate w-[200px]">
+                  <h3 className="text-[14px] font-medium text-gray-700 mb-1 truncate w-[150px]">
                       {Title}
                   </h3>
 

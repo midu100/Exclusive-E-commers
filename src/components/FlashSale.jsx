@@ -6,6 +6,7 @@ import CommonHead from "./common/CommonHead";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addTocart } from "../Slice";
+import { Slide, toast } from "react-toastify";
 
 const FlashSale = () => {
 
@@ -89,68 +90,75 @@ const FlashSale = () => {
      localStorage.setItem('Cart',JSON.stringify(existId))
      console.log(existId)
      dispatch(addTocart(existId))
+
+     toast.success('Product Added', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Slide,
+        });
    }
 
   return (
     <section className="py-[60px] bg-white ">
-      <div className="container mx-auto px-4">
-        <div className="row flex flex-col gap-[30px]">
-          
-          {/* ===== Header Part ===== */}
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <CommonHead status={'Today’s'} Name={'Flash Sales'}/>
+  <div className="container mx-auto px-4">
+    <div className="row flex flex-col gap-[30px]">
 
-            {/* ===== Timer ===== */}
-            <div className="flex gap-[15px] mt-4 md:mt-0">
-              <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">{timeleft.days}</p>
-                <p className="text-[12px] text-gray-500 capitalize">Days</p>
-              </div>
-              <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">{timeleft.hours}</p>
-                <p className="text-[12px] text-gray-500 capitalize">Hours</p>
-              </div>
-              <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">{timeleft.minutes}</p>
-                <p className="text-[12px] text-gray-500 capitalize">Minutes</p>
-              </div>
-              <div className="text-center bg-gray-100 rounded-[8px] px-[10px] py-[5px] w-[60px]">
-                <p className="text-[22px] font-bold text-red-500">{timeleft.seconds}</p>
-                <p className="text-[12px] text-gray-500 capitalize">Seconds</p>
-              </div>
+      {/* ===== Header Part ===== */}
+      <div className="flex flex-col md:flex-row justify-between items-center">
+        <CommonHead status={'Today’s'} Name={'Flash Sales'}/>
+
+        {/* ===== Timer ===== */}
+        <div className="flex gap-[10px] sm:gap-[12px] md:gap-[15px] mt-4 md:mt-0 flex-wrap justify-center md:justify-start">
+          {['days','hours','minutes','seconds'].map((unit,i) => (
+            <div key={i} className="text-center bg-gray-100 rounded-[8px] px-[8px] sm:px-[10px] py-[5px] w-[50px] sm:w-[55px] md:w-[60px]">
+              <p className="text-[18px] sm:text-[20px] md:text-[22px] font-bold text-red-500">{timeleft[unit]}</p>
+              <p className="text-[10px] sm:text-[11px] md:text-[12px] text-gray-500 capitalize">{unit.charAt(0).toUpperCase() + unit.slice(1)}</p>
             </div>
-          </div>
-
-          {/* ===== Products Section ===== */}
-          <div className="flex flex-wrap justify-between gap-[20px]">
-
-            {
-              product.map((item,i)=>(
-                <SingleProduct key={i} cartClick={()=>handleCart(item)} showDetails={()=>handleNav(item)} Img={item?.images[0]} Title={item.title} price={item.price} rating={item.rating}/>
-              ))
-            }
-           
-          </div>
-
-          {/* ===== View All Button ===== */}
-          <div className="text-center mt-[30px]">
-            {
-              showBtn ?
-              <button onClick={()=>{setCate('furniture'),setShowBtn(!showBtn)}} className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition">
-                 Previous Products
-              </button>
-
-              :
-
-
-            <button onClick={()=>{setCate('womens-dresses'),setShowBtn(!showBtn)}} className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition">
-              View All Products
-            </button>
-            }
-          </div>
+          ))}
         </div>
       </div>
-    </section>
+
+      {/* ===== Products Section ===== */}
+      <div className="flex flex-wrap justify-center md:justify-between gap-[15px] sm:gap-[20px]">
+        {
+          product.map((item,i)=>(
+            <SingleProduct 
+              key={i} 
+              cartClick={()=>handleCart(item)} 
+              showDetails={()=>handleNav(item)} 
+              Img={item?.images[0]} 
+              Title={item.title} 
+              price={item.price} 
+              rating={item.rating}
+            />
+          ))
+        }
+      </div>
+
+      {/* ===== View All Button ===== */}
+      <div className="text-center mt-[30px]">
+        {
+          showBtn ?
+          <button onClick={()=>{setCate('furniture');setShowBtn(!showBtn)}} className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition">
+             Previous Products
+          </button>
+          :
+          <button onClick={()=>{setCate('womens-dresses');setShowBtn(!showBtn)}} className="bg-red-500 hover:bg-red-600 text-white px-[30px] py-[12px] rounded-[6px] font-medium transition">
+            View All Products
+          </button>
+        }
+      </div>
+
+    </div>
+  </div>
+</section>
+
   );
 };
 
