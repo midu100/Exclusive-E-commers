@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router'
 import axios from 'axios'
 import { Slide, toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
+import { addTocart } from '../Slice'
 
 const ExploreProduct = () => {
 

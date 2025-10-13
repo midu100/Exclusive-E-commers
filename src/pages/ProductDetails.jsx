@@ -11,7 +11,7 @@ import BreadCrumb from "../components/common/BreadCrumb";
 import axios from "axios";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment } from "../Slice";
+import { addTocart, decrement, increment } from "../Slice";
 
 const ProductDetails = () => {
 
@@ -37,12 +37,25 @@ const ProductDetails = () => {
     const locationData = sendedData.state
     console.log(locationData)
 
+    const add = []
+    add.push(locationData)
+    console.log(add)
+
     const handleAdd = ()=>{
         dispatch(increment())
     }
 
      const handleSub = ()=>{
         dispatch(decrement())
+    }
+
+    const handleCart = (e)=>{
+      console.log(e)
+      const existId = JSON.parse(localStorage.getItem('Cart')) || []
+      existId.push(e)
+      localStorage.setItem('Cart' ,JSON.stringify(existId))
+      dispatch(addTocart(existId))
+
     }
     
 
@@ -118,9 +131,19 @@ const ProductDetails = () => {
                 </button>
               </div>
 
-              <button className="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-6 py-2 rounded-md font-medium transition">
-                Buy Now
-              </button>
+              {/* <button className="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-6 py-2 rounded-md font-medium transition">
+                Add Cart
+              </button> */}
+
+              {
+                add.map((item,i)=>(
+                  <button onClick={()=>handleCart(item)} className="bg-red-500 cursor-pointer hover:bg-red-600 text-white px-6 py-2 rounded-md font-medium transition">
+                       Add Cart
+                  </button>
+                ))
+              }
+
+              
 
               <button className="border border-gray-400 rounded-md p-2 cursor-pointer hover:bg-gray-100">
                 <FaHeart className="text-gray-600" />

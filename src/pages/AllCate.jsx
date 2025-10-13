@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router';
 import BreadCrumb from '../components/common/BreadCrumb';
 import { HiOutlineMenu } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
+import { useDispatch } from 'react-redux';
+import { addTocart } from '../Slice';
+import { Slide, toast } from 'react-toastify';
 
 const AllCate = () => {
 
@@ -13,6 +16,7 @@ const AllCate = () => {
   const navigate = useNavigate()
   const [title,setTitle] = useState('Furniture')
   const [mobileMenu,setMobileMenu] = useState(false)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     axios
@@ -33,6 +37,26 @@ const AllCate = () => {
 
   const handleDetail =(e)=>{
     navigate('/productdetails' , {state : e})
+  }
+
+  // =================Cart===================
+  const handleCart = (e)=>{
+    const existId = JSON.parse(localStorage.getItem('Cart')) || []
+    existId.push(e)
+    localStorage.setItem('Cart', JSON.stringify(existId))
+    dispatch(addTocart(existId))
+
+    toast.success('Product Added', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Slide,
+          });
   }
 
   return (
@@ -124,7 +148,8 @@ const AllCate = () => {
           {/* ===== Right Side (Products) ===== */}
           <div className="flex-1 flex flex-wrap justify-start gap-[10px] mt-6 md:mt-0">
             {product.map((item,i)=>(
-              <SingleProduct
+              <SingleProduct 
+                cartClick={()=>handleCart(item)}
                 showDetails={()=>handleDetail(item)}
                 key={i}
                 Img={item?.images[0]}

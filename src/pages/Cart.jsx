@@ -9,16 +9,16 @@ const Cart = () => {
   const localProduct = JSON.parse(localStorage.getItem("Cart"));
   const reduxData = useSelector((state) => state.redu.cartValue);
 
-  console.log(reduxData);
+  // console.log(reduxData);
   // console.log(localProduct)
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
     console.log(id);
 
-    //  const existingCart = JSON.parse(localStorage.getItem('Cart')) || [];
-    //  const updatedCart = existingCart.filter((item) => item.id !== id);
-    //  localStorage.setItem('Cart', JSON.stringify(updatedCart));
+    // const existingCart = JSON.parse(localStorage.getItem('Cart')) || []
+    // const updatedCart = existingCart.filter((item)=>item.id !== id)
+    // localStorage.setItem('Cart',JSON.stringify(updatedCart))
     dispatch(removeCart(id));
   };
 
@@ -26,7 +26,7 @@ const Cart = () => {
   const Sub = reduxData?.reduce((initial, item) => {
     return Math.floor(initial + item.price);
   }, 0);
-  console.log(Sub);
+  // console.log(Sub);
 
 
   // cupon
@@ -124,7 +124,7 @@ const Cart = () => {
           <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between bg-white shadow-md rounded-lg p-4 sm:p-6 w-full">
             <div className="flex items-center gap-4 sm:w-[400px] w-full">
               <img
-                src={item?.images[1]}
+                src={item?.images[0]}
                 alt={item?.title}
                 className="w-[80px] h-[80px] sm:w-[100px] sm:h-[100px] object-cover rounded-lg"
               />
