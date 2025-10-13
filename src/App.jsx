@@ -15,6 +15,7 @@ import AllCate from "./pages/AllCate";
 import Cart from "./pages/Cart";
 import Signup from "./pages/Signup ";
 import { ToastContainer } from "react-toastify";
+import Checkout from "./pages/Checkout";
 
 function App() {
   const myRoute = createBrowserRouter(
@@ -26,6 +27,7 @@ function App() {
           <Route path="/allcategory" element={<AllCate />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/singup" element={<Signup />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Route>
       </Route>
     )

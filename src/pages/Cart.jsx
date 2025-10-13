@@ -206,9 +206,9 @@ const Cart = () => {
           <p>${totalPrice}</p>
         </div>
 
-        <button className="bg-[#E94560] text-white w-full py-3 rounded-md hover:bg-[#d43750] transition duration-300">
+        <Link to={'/checkout'} className="bg-[#E94560] text-white w-full py-3 px-6 rounded-md hover:bg-[#d43750] transition duration-300">
           Proceed to Checkout
-        </button>
+        </Link>
       </div>
     </div>
   </div>
