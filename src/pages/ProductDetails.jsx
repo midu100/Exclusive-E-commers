@@ -12,6 +12,7 @@ import axios from "axios";
 import { useLocation, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addTocart, decrement, increment } from "../Slice";
+import { Slide, toast } from "react-toastify";
 
 const ProductDetails = () => {
 
@@ -55,6 +56,18 @@ const ProductDetails = () => {
       existId.push(e)
       localStorage.setItem('Cart' ,JSON.stringify(existId))
       dispatch(addTocart(existId))
+
+      toast.success('Product Added', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: false,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+              transition: Slide,
+              });
 
     }
     

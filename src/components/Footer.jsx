@@ -86,7 +86,7 @@ const Footer = () => {
 
         {/* Bottom Line */}
         <div className="text-center text-gray-500 text-[14px] mt-6">
-          © Copyright Rimel 2022. All rights reserved
+          © Copyright Kazi Mridul 2025. All rights reserved
         </div>
       </div>
     </footer>

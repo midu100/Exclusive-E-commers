@@ -6,6 +6,9 @@ import SingleProduct from './common/SingleProduct';
 import Slider from 'react-slick';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { Slide, toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { addTocart } from '../Slice';
 
 
 const BestSelling = () => {
@@ -45,6 +48,7 @@ const BestSelling = () => {
 
   const [product, setProduct] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     axios.get(`https://dummyjson.com/products/category/motorcycle`)
@@ -60,6 +64,27 @@ const BestSelling = () => {
   const handleDetail = (e) => {
     navigate('/productdetails', { state: e });
   };
+  //  =============== cart ================
+  const handleCart = (e)=>{
+        console.log(e)
+        const existId = JSON.parse(localStorage.getItem('Cart')) || []
+        existId.push(e)
+        localStorage.setItem('Cart' ,JSON.stringify(existId))
+        dispatch(addTocart(existId))
+  
+        toast.success('Product Added', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                transition: Slide,
+                });
+  
+      }
 
   return (
     <div>
@@ -77,6 +102,7 @@ const BestSelling = () => {
                   className="px-2 sm:px-3 md:px-4"  // ✅ proper spacing between cards
                 >
                   <SingleProduct
+                    cartClick={()=>handleCart(item)}
                     showDetails={() => handleDetail(item)}
                     Img={item.images[2]}
                     Title={item.title}
