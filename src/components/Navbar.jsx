@@ -15,7 +15,7 @@ const Navbar = () => {
     { Name: 'Home', path: '/' },
     { Name: 'Contact', path: '/' },
     { Name: 'About', path: '/' },
-    { Name: 'Sign Up', path: '/' },
+    { Name: 'Sign Up', path: '/singup' },
   ];
 
   const reduxCart = useSelector(state => state.redu.cartValue);
@@ -75,18 +75,11 @@ const Navbar = () => {
 
           {/* ---------- Mobile Dropdown Menu ---------- */}
           <div
-            className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${
-              menuOpen ? 'max-h-[300px] opacity-100 mt-4' : 'max-h-0 opacity-0'
-            }`}
-          >
+            className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out ${ menuOpen ? 'max-h-[300px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
             <ul className='flex flex-col gap-3 text-[15px] font-medium bg-[#f8f8f8] rounded-[8px] p-4 shadow-md'>
               {navItem.map((item, i) => (
                 <li key={i}>
-                  <Link
-                    to={item.path}
-                    className='block py-2 text-center hover:text-orange-500 transition-colors duration-300'
-                    onClick={() => setMenuOpen(false)}
-                  >
+                  <Link to={item.path} className='block py-2 text-center hover:text-orange-500 transition-colors duration-300'>
                     {item.Name}
                   </Link>
                 </li>
