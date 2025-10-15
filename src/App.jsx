@@ -17,6 +17,7 @@ import Signup from "./pages/Signup ";
 import { ToastContainer } from "react-toastify";
 import Checkout from "./pages/Checkout";
 import Signin from "./pages/Signin";
+import app from "./Firebase.config";
 
 function App() {
   const myRoute = createBrowserRouter(

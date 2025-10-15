@@ -1,9 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import { Link } from 'react-router' // ✅ Correct for React Router
 import SignupImg from '../assets/img/qr.png' // your local image path
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+import { Slide, toast } from 'react-toastify';
 
 const Signup = () => {
+  const auth = getAuth();
+
+  const [formData,setFormData] = useState({Name:'',email : '',password :'',errors:''})
+  
+  const handleRegister = (e)=>{
+    e.preventDefault()
+
+    if(!formData.Name || !formData.email || !formData.password) return setFormData((prev)=>({...prev,errors: 'All feild must be filled in.'}))
+
+
+      createUserWithEmailAndPassword(auth, formData.email, formData.password)
+        .then((userCredential) => {
+          // Signed up 
+          const user = userCredential.user;
+          console.log(user)
+          // ...
+          updateProfile(auth.currentUser, {displayName: formData.Name, photoURL: "https://example.com/jane-q-user/profile.jpg"})
+              .then(() => {
+              // Profile updated!
+              // ...
+              sendEmailVerification(auth.currentUser)
+                .then(() => {
+                  // Email verification sent!
+                  // ...
+
+                  toast.success('Email verification send', {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: false,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "dark",
+                      transition: Slide,
+                      });
+                });
+            }).catch((error) => {
+              // An error occurred
+              // ...
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          console.log(errorCode)
+
+          if(errorCode == 'auth/email-already-in-use') return toast.error('Email or Password already exist', {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: false,
+                          closeOnClick: false,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "dark",
+                          transition: Slide,
+                          });
+        });
+
+  }
+  
+
   return (
     <section className="w-full bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 md:px-8">
       <div className="container mx-auto">
@@ -27,18 +93,20 @@ const Signup = () => {
               Enter your details below
             </p>
 
-            <form className="flex flex-col gap-[18px]">
-              <input
+              <p className='text-[14px] font-mono text-red-500 text-center'>{formData.errors}</p>
+
+            <form onSubmit={handleRegister} className="flex flex-col gap-[18px]">
+              <input onChange={(e)=>{setFormData((prev)=>({...prev,Name:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}}
                 type="text"
                 placeholder="Name"
                 className="border-b border-gray-300 focus:border-black outline-none py-[10px] text-[15px]"
               />
-              <input
-                type="text"
-                placeholder="Email or Phone Number"
+              <input onChange={(e)=>{setFormData((prev)=>({...prev,email:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}}
+                type="email"
+                placeholder="Email "
                 className="border-b border-gray-300 focus:border-black outline-none py-[10px] text-[15px]"
               />
-              <input
+              <input onChange={(e)=>{setFormData((prev)=>({...prev,password:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}}
                 type="password"
                 placeholder="Password"
                 className="border-b border-gray-300 focus:border-black outline-none py-[10px] text-[15px]"
