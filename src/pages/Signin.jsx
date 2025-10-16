@@ -1,8 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import { Link } from 'react-router' // ✅ 
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Slide, toast } from 'react-toastify';
 
 const Signin = () => {
+
+  const auth = getAuth();
+
+  const[formData,setFormData] = useState({email: '', password : '',errors : ''})
+
+  const handleLogin = (e)=>{
+    e.preventDefault()
+
+    if(!formData.email || !formData.password) return setFormData((prev)=>({...prev,errors : 'All feild must be filled-in.'}))
+
+    signInWithEmailAndPassword(auth, formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+        // ...
+        console.log(user)
+        if(user.emailVerified == false) return toast.error('Your email is not verified.', {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: false,
+                          closeOnClick: false,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "dark",
+                          transition: Slide,
+                          });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode)
+        if(errorCode == 'auth/invalid-email') return toast.error('Invalid Email or Password', {
+                          position: "top-right",
+                          autoClose: 5000,
+                          hideProgressBar: false,
+                          closeOnClick: false,
+                          pauseOnHover: true,
+                          draggable: true,
+                          progress: undefined,
+                          theme: "dark",
+                          transition: Slide,
+                          });
+      });
+
+  }
+
+
   return (
     <section className="w-full bg-white min-h-screen flex justify-center items-center px-4 sm:px-6 md:px-8">
       <div className="container mx-auto">
@@ -26,13 +76,17 @@ const Signin = () => {
               Enter your credentials to sign in
             </p>
 
-            <form className="flex flex-col gap-[18px]">
-              <input
+            <p className='text-[14px] font-mono text-red-500 text-center'>{formData.errors}</p>
+
+            <form onSubmit={handleLogin} className="flex flex-col gap-[18px]">
+              <input 
+                onChange={(e)=>{setFormData((prev)=>({...prev,email : e.target.value})), setFormData((prev)=>({...prev,errors:''}))}}
                 type="text"
-                placeholder="Email or Phone Number"
+                placeholder="Email"
                 className="border-b border-gray-300 focus:border-black outline-none py-[10px] text-[15px]"
               />
-              <input
+              <input 
+                onChange={(e)=>{setFormData((prev)=>({...prev,password : e.target.value})), setFormData((prev)=>({...prev,errors:''}))}}
                 type="password"
                 placeholder="Password"
                 className="border-b border-gray-300 focus:border-black outline-none py-[10px] text-[15px]"
