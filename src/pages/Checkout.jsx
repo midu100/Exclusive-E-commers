@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Slide, toast } from 'react-toastify'
+import { getDatabase, push, ref, set } from "firebase/database";
 
 const CheckoutPage = () => {
+
+  const db = getDatabase();
     
     const[delivery,setDelivery]= useState(60)
     const [discountAmount,setDiscountAmount] = useState(0)
     const reduxData = useSelector((state)=>state.redu.cartValue)
+    console.log(reduxData)
     const [coupon,setCoupon] = useState('')
     const [code,setCode]=useState('midu100')
-    
+    const [formData,setFormData]= useState({Name:'',Phone:'',City:'',Address:'',errors:''})
 
 
     // ======subtotal========
@@ -67,37 +71,61 @@ const CheckoutPage = () => {
     // =======Total=========
     const Total = discountdTotal + delivery
 
+    // ======place order========
+    const handlePlaceOrder = ()=>{
+      if(!formData.Name || !formData.Phone || !formData.City || !formData.Address ) return setFormData((prev)=>({...prev,errors: 'All feild must be filled in'}))
+
+      reduxData.forEach((item)=>{
+
+        set(push(ref(db, 'orders/')), {
+          username: formData.Name,
+          phone: formData.Phone,
+          city : formData.City,
+          address : formData.Address,
+          productname : item.title,
+          productprice :item.price,
+          totalprice : Total 
+        });
+
+        toast.success('Order placed successfully!', {
+          position: "top-center",
+          autoClose: 3000,
+          theme: "dark",
+          transition: Slide,
+        });
+
+
+      })
+    }
+
   return (
     <section className='py-16 bg-gray-50'>
       <div className='container mx-auto px-6 flex flex-col lg:flex-row gap-10'>
         {/* Billing Details */}
         <div className='flex-1 bg-white shadow-lg rounded-2xl p-8'>
           <h2 className='text-2xl font-semibold mb-6 text-gray-800'>Billing Details</h2>
+
+          <p className='text-[15px] font-normal text-red-500 text-center'>{formData.errors}</p>
           <form className='flex flex-col gap-5'>
 
             <div>
               <label className='block text-gray-600 mb-2'>Full Name*</label>
-              <input type='text' placeholder='Enter your full name' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
+              <input onChange={(e)=>{setFormData((prev)=>({...prev,Name:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}} type='text' placeholder='Enter your full name' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
             </div>
 
             <div>
               <label className='block text-gray-600 mb-2'>Phone Number*</label>
-              <input type='tel' placeholder='Enter your phone number' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
-            </div>
-
-            <div>
-              <label className='block text-gray-600 mb-2'>Email Address*</label>
-              <input type='email' placeholder='Enter your email address' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
+              <input onChange={(e)=>{setFormData((prev)=>({...prev,Phone:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}} type='number' placeholder='Enter your phone number' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
             </div>
             
             <div>
               <label className='block text-gray-600 mb-2'>Town/City*</label>
-              <input type='text' placeholder='Enter your town or city' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
+              <input onChange={(e)=>{setFormData((prev)=>({...prev,City:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}} type='text' placeholder='Enter your town or city' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'/>
             </div>
 
             <div>
               <label className='block text-gray-600 mb-2'>Street Address*</label>
-              <textarea placeholder='Enter your full address' rows='3' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'></textarea>
+              <textarea onChange={(e)=>{setFormData((prev)=>({...prev,Address:e.target.value})),setFormData((prev)=>({...prev,errors:''}))}} placeholder='Enter your full address' rows='3' className='w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-red-400'></textarea>
             </div>
             
             <div className='flex items-center mt-4'>
@@ -182,7 +210,7 @@ const CheckoutPage = () => {
            </p>
 
             {/* Place Order Button */}
-            <button className='w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-md mt-6 transition'>Place Order</button>
+            <button onClick={handlePlaceOrder} className='w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-md mt-6 transition'>Place Order</button>
           </div>
         </div>
       </div>
